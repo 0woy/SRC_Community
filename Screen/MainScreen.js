@@ -34,7 +34,9 @@ function MainScreen({navigation}) {
             onPress={() => navigation.navigate('자유게시판')}>
             <Text style={styles.text}>자유게시판</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.Button}>
+          <TouchableOpacity
+            style={styles.Button}
+            onPress={() => navigation.navigate('전체게시판')}>
             <Text style={styles.text}>전체게시판</Text>
           </TouchableOpacity>
         </View>
