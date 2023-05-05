@@ -1,21 +1,16 @@
 import React, {useState} from 'react';
 import {View, TextInput, Button, Alert, Text, StyleSheet} from 'react-native';
 import auth from '@react-native-firebase/auth';
-import styles from './Styles';
+import styles from './Style/RegisterStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 function SignInScreen({navigation}) {
   const [form, setForm] = useState({
     email: '',
     password: '',
-    confirmPassword: '',
-    user_name: '',
-    user_id: '',
-    src_name: '',
   });
 
   const resultMessages = {
-    'auth/email-already-in-use': '이미 가입된 이메일입니다.',
     'auth/wrong-password': '잘못된 비밀번호입니다.',
     'auth/user-not-found': '존재하지 않는 계정입니다.',
     'auth/invalid-email': '유효하지 않은 이메일 주소입니다.',
@@ -28,7 +23,6 @@ function SignInScreen({navigation}) {
 
   const handleSignIn = async () => {
     if (!form.email || !form.password) {
-      console.log('error!');
       Alert.alert('입력오류', '모든 필드를 입력해 주세요.');
       return;
     }
@@ -37,8 +31,6 @@ function SignInScreen({navigation}) {
 
     try {
       const {user} = await auth().signInWithEmailAndPassword(email, password);
-      console.log(user);
-      Alert.alert('로그인 성공!', '로그인성공');
       navigation.navigate('메인화면');
     } catch (e) {
       const alertMessage = resultMessages[e.code]
@@ -50,20 +42,29 @@ function SignInScreen({navigation}) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.input}>
-        <Text style={styles.buttonText}> 제목 텍스트</Text>
+      <View style={styles.deepContainer}>
+        <Text
+          style={{
+            marginBottom: 50,
+            fontSize: 27,
+            fontWeight: 'bold',
+            color: 'white',
+          }}>
+          순천향대 기숙사 커뮤니티
+        </Text>
       </View>
       <View>
         <TextInput
           placeholder="이메일"
           onChangeText={value => handleInputChange('email', value)}
-          placeholderTextColor={'black'}
+          placeholderTextColor={'gray'}
+          keyboardType="email-address"
           style={styles.textInput}
         />
         <TextInput
           placeholder="비밀번호"
           secureTextEntry
-          placeholderTextColor={'black'}
+          placeholderTextColor={'gray'}
           style={styles.textInput}
           onChangeText={value => handleInputChange('password', value)}
         />
