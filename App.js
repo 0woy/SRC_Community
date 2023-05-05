@@ -5,19 +5,11 @@
  * @format
  */
 import 'react-native-gesture-handler';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
 
-import * as React from 'react';
+import {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import StackNavigation from './Screen/Navigations/Stack';
+import MainStack from './Screen/Navigations/MainStack';
 
 function App() {
   return (
