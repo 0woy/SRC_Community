@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
-import {View, TextInput, Button, Alert, Text, StyleSheet} from 'react-native';
+import {View, TextInput, Button, Alert, Text} from 'react-native';
 import auth from '@react-native-firebase/auth';
-import {signUp} from '../lib/auth';
+import Fstyles from './Style/FindUserStyles';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 function FindUserScreen({navigation}) {
-  const [isRegister, setRegister] = useState(true);
+  const [isID, setID] = useState(true);
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -59,31 +60,91 @@ function FindUserScreen({navigation}) {
     }
   };
 
-  return (
-    <View style={styles.input}>
-      <TextInput
-        placeholder="이름"
-        onChangeText={value => handleInputChange('user_name', value)}
-      />
-      <TextInput
-        placeholder="학번"
-        onChangeText={value => handleInputChange('user_id', value)}
-      />
-      <TextInput
-        placeholder="거주생활관"
-        onChangeText={value => handleInputChange('src_name', value)}
-      />
-      <Button style={styles.btn} title="아이디 찾기" onPress={handleFindID} />
+  const toggleID = value => {
+    setID(value);
+    console.log(value);
+  };
+
+  return isID ? (
+    <View style={Fstyles.container}>
+      <View style={Fstyles.subContainer}>
+        <TouchableOpacity style={{marginHorizontal: 20}}>
+          <Text style={Fstyles.text}>아이디 찾기</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => toggleID(false)}
+          style={{marginHorizontal: 20}}>
+          <Text style={Fstyles.buttonText}>비밀번호 찾기</Text>
+        </TouchableOpacity>
+      </View>
+      <View>
+        <TextInput
+          placeholderTextColor={'#A9A9A9'}
+          style={Fstyles.textInput}
+          placeholder="이름"
+          onChangeText={value => handleInputChange('user_name', value)}
+        />
+        <TextInput
+          placeholderTextColor={'#A9A9A9'}
+          style={Fstyles.textInput}
+          keyboardType="numeric"
+          placeholder="학번"
+          onChangeText={value => handleInputChange('user_id', value)}
+        />
+        <TextInput
+          placeholderTextColor={'#A9A9A9'}
+          style={Fstyles.textInput}
+          placeholder="거주생활관 (예: 향설3관)"
+          onChangeText={value => handleInputChange('src_name', value)}
+        />
+      </View>
+      <View>
+        <TouchableOpacity style={Fstyles.button} onPress={handleFindID}>
+          <Text style={Fstyles.buttonText}>아이디 찾기</Text>
+        </TouchableOpacity>
+      </View>
+    </View>
+  ) : (
+    <View style={Fstyles.container}>
+      <View style={Fstyles.subContainer}>
+        <TouchableOpacity
+          onPress={() => toggleID(true)}
+          style={{marginHorizontal: 20}}>
+          <Text style={Fstyles.buttonText}>아이디 찾기</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{marginHorizontal: 20}}>
+          <Text style={Fstyles.text}>비밀번호 찾기</Text>
+        </TouchableOpacity>
+      </View>
+      <View>
+        <TextInput
+          placeholderTextColor={'#A9A9A9'}
+          style={Fstyles.textInput}
+          keyboardType="email-address"
+          placeholder="가입된 이메일"
+          onChangeText={value => handleInputChange('user_name', value)}
+        />
+        <TextInput
+          placeholderTextColor={'#A9A9A9'}
+          style={Fstyles.textInput}
+          keyboardType="numeric"
+          placeholder="학번"
+          onChangeText={value => handleInputChange('user_id', value)}
+        />
+        <TextInput
+          placeholderTextColor={'#A9A9A9'}
+          style={Fstyles.textInput}
+          placeholder="거주생활관 (예: 향설3관)"
+          onChangeText={value => handleInputChange('src_name', value)}
+        />
+      </View>
+      <View>
+        <TouchableOpacity style={Fstyles.button} onPress={handleFindID}>
+          <Text style={Fstyles.buttonText}>비밀번호 찾기</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
-const styles = StyleSheet.create({
-  input: {
-    backgroundColor: 'black',
-    color: 'red',
-  },
-  btn: {
-    backgroundColor: '#F24141',
-  },
-});
+
 export default FindUserScreen;
