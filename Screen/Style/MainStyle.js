@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
   subContainer: {
     flexDirection: 'row',
     backgroundColor: '#094A73',
+    justifyContent: 'space-between',
     padding: 25,
   },
   Button: {

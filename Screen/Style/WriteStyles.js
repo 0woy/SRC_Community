@@ -10,9 +10,15 @@ const styles = StyleSheet.create({
   subContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    //backgroundColor: '#094A73',
-    padding: 15,
-    marginBottom: 50,
+    padding: 13,
+    alignItems: 'center',
+    //marginTop: 5,
+    marginBottom: 20,
+  },
+  SelectView: {
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    justifyContent: 'center',
   },
   Button: {
     alignItems: 'center',
@@ -43,7 +49,6 @@ const styles = StyleSheet.create({
 
   Title: {
     color: 'black',
-    //borderBottomColor: 'gray',
     borderBottomWidth: 1,
     fontWeight: 'bold',
     fontSize: 20,
@@ -52,24 +57,15 @@ const styles = StyleSheet.create({
   Content: {
     margin: 10,
     color: 'black',
-
     fontWeight: 'normal',
     fontSize: 16,
   },
-  subButton: {
-    alignItems: 'center',
-    //marginHorizontal: 20,
-    //  marginVertical: 40,
-    backgroundColor: '#F4F4CD',
-    borderRadius: 10,
-    paddingTop: 15,
-    width: 50,
-    height: 50,
-  },
+
   text: {
+    //paddingTop: 10,
     fontWeight: 'bold',
     color: 'black',
-    fontSize: 20,
+    fontSize: 25,
   },
 });
 

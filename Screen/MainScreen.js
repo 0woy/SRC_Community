@@ -31,29 +31,63 @@ function MainScreen({navigation}) {
         <View style={{flexDirection: 'row'}}>
           <TouchableOpacity
             style={styles.Button}
-            onPress={() => navigation.navigate('자유게시판')}>
+            onPress={() =>
+              navigation.navigate('자유게시판', {
+                board: '자유게시판',
+                src: srcName,
+              })
+            }>
             <Text style={styles.text}>자유게시판</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.Button}
-            onPress={() => navigation.navigate('전체게시판')}>
+            onPress={() =>
+              navigation.navigate('전체게시판', {
+                board: '전체게시판',
+                src: srcName,
+              })
+            }>
             <Text style={styles.text}>전체게시판</Text>
           </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity style={styles.Button}>
-            <Text style={styles.text}>택시</Text>
+          <TouchableOpacity
+            style={styles.Button}
+            onPress={() =>
+              navigation.navigate('택시 타자', {
+                board: '택시 타자',
+                src: srcName,
+              })
+            }>
+            <Text style={styles.text}>택시 타자</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.Button}>
-            <Text style={styles.text}>배달</Text>
+          <TouchableOpacity
+            style={styles.Button}
+            onPress={() =>
+              navigation.navigate('같이 먹자', {
+                board: '같이 먹자',
+                src: srcName,
+              })
+            }>
+            <Text style={styles.text}>같이 먹자</Text>
           </TouchableOpacity>
         </View>
       </View>
       <View style={styles.subContainer}>
         <TouchableOpacity
           style={styles.subButton}
+          onPress={() => navigation.navigate('메인화면')}>
+          <Text style={{color: 'black'}}>홈</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.subButton}
           onPress={() => navigation.navigate('글쓰기')}>
-          <Text style={{color: 'black'}}>미워</Text>
+          <Text style={{color: 'black'}}>글쓰기</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.subButton}
+          onPress={() => navigation.navigate('알림')}>
+          <Text style={{color: 'black'}}>알림</Text>
         </TouchableOpacity>
       </View>
     </View>

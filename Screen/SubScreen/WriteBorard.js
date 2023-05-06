@@ -6,7 +6,6 @@ import styles from '../Style/WriteStyles';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 const WriteBoard = ({navigation}) => {
   // 게시판 선택을 위한 코드
@@ -14,15 +13,30 @@ const WriteBoard = ({navigation}) => {
   const data = [
     {key: '1', value: '자유게시판'},
     {key: '2', value: '전체게시판'},
-    {key: '3', value: '배달'},
-    {key: '4', value: '택시'},
+    {key: '3', value: '같이 먹자'},
+    {key: '4', value: '택시  타자'},
   ];
 
+  const [srcName, setSrcName] = useState('');
   const [posts, setPosts] = useState([]);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [board, setBoard] = useState('자유게시판'); // default: 자유게시판
   const db = firebase.firestore();
+  const currentUser = firebase.auth().currentUser;
+
+  useEffect(() => {
+    db.collection('users')
+      .doc(currentUser.email)
+      .get()
+      .then(doc => {
+        const srcName = doc.data().src_name;
+        setSrcName(srcName);
+      })
+      .catch(error => {
+        console.log('Error getting document:', error);
+      });
+  }, []);
 
   useEffect(() => {
     const unsubscribe = db
@@ -67,6 +81,7 @@ const WriteBoard = ({navigation}) => {
         createdAt,
         userId: currentUser.uid,
         board: selected, // add board to the post data
+        src_name: srcName,
       });
       navigation.navigate('메인화면');
     } catch (error) {
@@ -85,23 +100,12 @@ const WriteBoard = ({navigation}) => {
           onPress={() => navigation.navigate('메인화면')}>
           <Text style={styles.BackText}>X</Text>
         </TouchableOpacity>
+        <Text style={styles.text}>게시글 작성</Text>
         <TouchableOpacity style={styles.Button} onPress={handleSubmit}>
           <Text style={styles.submitText}>완료</Text>
         </TouchableOpacity>
-        {/* {posts.map(post => (
-          <View key={post.id}>
-            <Text style={styles.text}>{post.title}</Text>
-            <Text style={styles.text}>{post.content}</Text>
-            <Text style={styles.text}>{post.userId}</Text>
-          </View>
-        ))} */}
       </View>
-      <View
-        style={{
-          paddingHorizontal: 20,
-          paddingVertical: 10,
-          justifyContent: 'center',
-        }}>
+      <View style={styles.SelectView}>
         <SelectList
           placeholder="게시판 선택"
           notFoundText="해당 게시판은 없습니다."
@@ -109,7 +113,7 @@ const WriteBoard = ({navigation}) => {
           data={data}
           save="value"
           boxStyles={{
-            backgroundColor: 'gray',
+            backgroundColor: 'purple',
             marginRight: 80,
           }}
           defaultOption={('1', '자유게시판')}
@@ -127,6 +131,8 @@ const WriteBoard = ({navigation}) => {
         />
         <TextInput
           value={content}
+          multiline={true}
+          textAlignVertical={'top'}
           style={styles.Content}
           onChangeText={setContent}
           placeholder="내용을 입력하세요.."
