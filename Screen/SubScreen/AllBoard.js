@@ -18,7 +18,7 @@ const AllBoard = ({navigation, route}) => {
     if (board === '자유게시판') {
       query = query.where('src_name', '==', srcName);
     }
-    console.log('board:', board, 'src:', srcName);
+
     unsubscribe = query.onSnapshot(querySnapshot => {
       const posts = [];
       // 자유게시판인 경우 에러가 발생하여 해당 if문 추가하여 solve
@@ -39,7 +39,7 @@ const AllBoard = ({navigation, route}) => {
     if (postDate.isSame(today, 'day')) {
       dateStr = postDate.format('hh:mm A');
     } else {
-      dateStr = postDate.format('MMM DD');
+      dateStr = postDate.format('MM월 DD일');
     }
     return (
       <View style={styles.postContainer}>

@@ -1,14 +1,26 @@
-import React, {useState} from 'react';
-import {View, TextInput, Button, Alert, Text, StyleSheet} from 'react-native';
+import React, {useState, useRef} from 'react';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  View,
+  TextInput,
+  Alert,
+  Text,
+} from 'react-native';
 import auth from '@react-native-firebase/auth';
 import styles from './Style/RegisterStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useUserContext} from './Navigations/UserContext';
+import {getUser} from '../lib/user';
+import SetupProfile from './SetupProfile';
 
 function SignInScreen({navigation}) {
+  const bodyRef = useRef();
   const [form, setForm] = useState({
     email: '',
     password: '',
   });
+  const {setUser} = useUserContext();
 
   const resultMessages = {
     'auth/wrong-password': '잘못된 비밀번호입니다.',
@@ -21,22 +33,28 @@ function SignInScreen({navigation}) {
     setForm(prevState => ({...prevState, [name]: value}));
   };
 
-  const handleSignIn = async () => {
+  const onSubmit = async () => {
     if (!form.email || !form.password) {
       Alert.alert('입력오류', '모든 필드를 입력해 주세요.');
       return;
     }
-
     const {email, password} = form;
 
     try {
       const {user} = await auth().signInWithEmailAndPassword(email, password);
-      navigation.navigate('메인화면');
+      const profile = await getUser(user.email);
+      console.log(profile);
+      if (!profile) {
+        navigation.navigate('회원등록', {uid: user.uid});
+      } else {
+        setUser(profile);
+      }
     } catch (e) {
       const alertMessage = resultMessages[e.code]
         ? resultMessages[e.code]
         : '알 수 없는 이유로 로그인에 실패하였습니다.';
       Alert.alert('로그인 실패', alertMessage);
+      console.log(e);
     }
   };
 
@@ -57,8 +75,15 @@ function SignInScreen({navigation}) {
         <TextInput
           placeholder="이메일"
           onChangeText={value => handleInputChange('email', value)}
+          returnkeyType="next"
           placeholderTextColor={'gray'}
+          autoCapitalize="none" /*첫 번째 문자 자동 대문자 비활성화*/
+          autoCorrect={false} /*자동 수정 비활성화*/
           keyboardType="email-address"
+          /* 완료 버튼 -> 비밀번호 입력창으로 이동 */
+          onSubmitEditing={() => {
+            bodyRef.current.focus();
+          }}
           style={styles.textInput}
         />
         <TextInput
@@ -66,6 +91,7 @@ function SignInScreen({navigation}) {
           secureTextEntry
           placeholderTextColor={'gray'}
           style={styles.textInput}
+          ref={bodyRef}
           onChangeText={value => handleInputChange('password', value)}
         />
       </View>
@@ -96,7 +122,7 @@ function SignInScreen({navigation}) {
           onPress={() => navigation.navigate('회원가입')}>
           <Text style={styles.buttonText}>회원가입</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+        <TouchableOpacity style={styles.button} onPress={onSubmit}>
           <Text style={styles.buttonText}>로그인</Text>
         </TouchableOpacity>
       </View>

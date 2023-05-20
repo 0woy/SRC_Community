@@ -6,16 +6,20 @@
  */
 import 'react-native-gesture-handler';
 
-import {useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import StackNavigation from './Screen/Navigations/Stack';
 import MainStack from './Screen/Navigations/MainStack';
+import {UserContextProvider} from './Screen/Navigations/UserContext';
 
 function App() {
+  const [user, setUser] = useState(null);
   return (
-    <NavigationContainer>
-      <StackNavigation />
-    </NavigationContainer>
+    <UserContextProvider>
+      <NavigationContainer>
+        {user ? <MainStack /> : <StackNavigation setUser={setUser} />}
+      </NavigationContainer>
+    </UserContextProvider>
   );
 }
 

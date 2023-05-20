@@ -26,6 +26,9 @@ function MainScreen({navigation}) {
     <View style={{flex: 1}}>
       <View style={styles.subContainer}>
         <Text style={styles.text}>{srcName}</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('검색')}>
+          <Text style={{color: 'white'}}>Search</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.container}>
         <View style={{flexDirection: 'row'}}>
