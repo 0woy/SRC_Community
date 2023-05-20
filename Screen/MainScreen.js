@@ -3,6 +3,7 @@ import {View, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import styles from './Style/MainStyle';
 import {firebase} from '@react-native-firebase/auth';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 function MainScreen({navigation}) {
   const [srcName, setSrcName] = useState('');
@@ -25,9 +26,18 @@ function MainScreen({navigation}) {
   return (
     <View style={{flex: 1}}>
       <View style={styles.subContainer}>
-        <Text style={styles.text}>{srcName}</Text>
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity>
+            <Icon
+              name="dehaze"
+              size={30}
+              color="white"
+              style={{paddingRight: 13}}></Icon>
+          </TouchableOpacity>
+          <Text style={styles.text}>{srcName}</Text>
+        </View>
         <TouchableOpacity onPress={() => navigation.navigate('검색')}>
-          <Text style={{color: 'white'}}>Search</Text>
+          <Icon name="search" size={30} color="white"></Icon>
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
@@ -41,6 +51,7 @@ function MainScreen({navigation}) {
               })
             }>
             <Text style={styles.text}>자유게시판</Text>
+            <Icon name="people" size={65} color="white"></Icon>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.Button}
@@ -51,6 +62,7 @@ function MainScreen({navigation}) {
               })
             }>
             <Text style={styles.text}>전체게시판</Text>
+            <Icon name="house" size={65} color="skyblue"></Icon>
           </TouchableOpacity>
         </View>
         <View style={{flexDirection: 'row'}}>
@@ -63,6 +75,7 @@ function MainScreen({navigation}) {
               })
             }>
             <Text style={styles.text}>택시 타자</Text>
+            <Icon name="local-taxi" size={65} color="green"></Icon>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.Button}
@@ -73,24 +86,19 @@ function MainScreen({navigation}) {
               })
             }>
             <Text style={styles.text}>같이 먹자</Text>
+            <Icon name="delivery-dining" size={65} color="orange"></Icon>
           </TouchableOpacity>
         </View>
       </View>
       <View style={styles.subContainer}>
-        <TouchableOpacity
-          style={styles.subButton}
-          onPress={() => navigation.navigate('메인화면')}>
-          <Text style={{color: 'black'}}>홈</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('메인화면')}>
+          <Icon name="contact-page" size={35} color="white"></Icon>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.subButton}
-          onPress={() => navigation.navigate('글쓰기')}>
-          <Text style={{color: 'black'}}>글쓰기</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('글쓰기')}>
+          <Icon name="brush" size={35} color="white"></Icon>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.subButton}
-          onPress={() => navigation.navigate('알림')}>
-          <Text style={{color: 'black'}}>알림</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('알림')}>
+          <Icon name="alarm-on" size={35} color="white"></Icon>
         </TouchableOpacity>
       </View>
     </View>

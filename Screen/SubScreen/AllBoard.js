@@ -5,6 +5,7 @@ import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/firestore';
 import moment from 'moment';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const AllBoard = ({navigation, route}) => {
   const [posts, setPosts] = useState([]);
@@ -63,7 +64,7 @@ const AllBoard = ({navigation, route}) => {
         <TouchableOpacity
           style={styles.text}
           onPress={() => navigation.navigate('메인화면')}>
-          <Text style={styles.text}>X</Text>
+          <Icon name="close" size={30} color="white"></Icon>
         </TouchableOpacity>
       </View>
       <SafeAreaView style={{flex: 1}}>
@@ -73,6 +74,22 @@ const AllBoard = ({navigation, route}) => {
           keyExtractor={item => item.id}
         />
       </SafeAreaView>
+      <View
+        style={{
+          alignItems: 'center',
+          paddingBottom: 15,
+          backgroundColor: 'rgba(0, 0, 0, 0)',
+        }}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: 'rgba(242, 65, 65,0.75)',
+            padding: 8,
+            borderRadius: 5,
+          }}
+          onPress={() => navigation.navigate('글쓰기')}>
+          <Text style={{color: 'white'}}>글쓰기</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };

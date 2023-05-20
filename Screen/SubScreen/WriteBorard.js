@@ -1,11 +1,21 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Alert, TextInput} from 'react-native';
+import {
+  View,
+  Text,
+  Alert,
+  TextInput,
+  Platform,
+  Pressable,
+  Image,
+} from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';
 import firebase from '@react-native-firebase/app';
 import styles from '../Style/WriteStyles';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import {launchImageLibrary} from 'react-native-image-picker'; // 이미지
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const WriteBoard = ({navigation}) => {
   // 게시판 선택을 위한 코드
@@ -14,11 +24,12 @@ const WriteBoard = ({navigation}) => {
     {key: '1', value: '자유게시판'},
     {key: '2', value: '전체게시판'},
     {key: '3', value: '같이 먹자'},
-    {key: '4', value: '택시  타자'},
+    {key: '4', value: '택시 타자'},
   ];
 
   const [srcName, setSrcName] = useState('');
   const [posts, setPosts] = useState([]);
+  const [response, setResponse] = useState(null); // 이미지 관리 state
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [board, setBoard] = useState('자유게시판'); // default: 자유게시판
@@ -60,6 +71,21 @@ const WriteBoard = ({navigation}) => {
     return () => unsubscribe();
   }, [board]); // board의 상태가 바뀔 때마다 실행
 
+  const onSelectImage = () => {
+    launchImageLibrary(
+      {
+        mediaType: 'photo',
+        maxWidth: 512,
+        maxHeight: 512,
+        includeBase64: Platform.OS === 'android',
+      },
+      res => {
+        if (res.didCancel) return;
+        setResponse(res);
+      },
+    );
+  };
+
   // 게시글 작성 완료
   const handleSubmit = async () => {
     if (!selected) {
@@ -83,7 +109,10 @@ const WriteBoard = ({navigation}) => {
         board: selected, // add board to the post data
         src_name: srcName,
       });
-      navigation.navigate('메인화면');
+      navigation.navigate(selected, {
+        board: selected,
+        src: srcName,
+      });
     } catch (error) {
       console.log(error);
     }
@@ -95,10 +124,8 @@ const WriteBoard = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <TouchableOpacity
-          style={styles.BackButton}
-          onPress={() => navigation.navigate('메인화면')}>
-          <Text style={styles.BackText}>X</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Icon name="close" size={30} color="black"></Icon>
         </TouchableOpacity>
         <Text style={styles.text}>게시글 작성</Text>
         <TouchableOpacity style={styles.Button} onPress={handleSubmit}>
@@ -113,12 +140,12 @@ const WriteBoard = ({navigation}) => {
           data={data}
           save="value"
           boxStyles={{
-            backgroundColor: 'purple',
+            backgroundColor: '#C6C6C6',
             marginRight: 80,
           }}
           defaultOption={('1', '자유게시판')}
           searchPlaceholder="검색"
-          dropdownStyles={{backgroundColor: 'gray', marginRight: 80}}
+          dropdownStyles={{backgroundColor: '#C6C6C6', marginRight: 80}}
         />
       </View>
       <View>
@@ -138,6 +165,12 @@ const WriteBoard = ({navigation}) => {
           placeholder="내용을 입력하세요.."
           placeholderTextColor={'black'}
         />
+      </View>
+      <View>
+        {response && <Image source={{uri: response?.assets[0]?.uri}} />}
+        <Pressable onPress={onSelectImage}>
+          <Icon name="camera-alt" size={30} color="black"></Icon>
+        </Pressable>
       </View>
     </View>
   );

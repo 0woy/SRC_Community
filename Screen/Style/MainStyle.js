@@ -3,7 +3,7 @@ import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    backgroundColor: '#FFFFFF',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: '#094A73',
     justifyContent: 'space-between',
-    padding: 25,
+    paddingVertical: 20,
+    paddingHorizontal: 20,
   },
   Button: {
     alignItems: 'center',
@@ -23,16 +24,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 140,
   },
-  subButton: {
-    alignItems: 'center',
-    //marginHorizontal: 20,
-    //  marginVertical: 40,
-    backgroundColor: '#F4F4CD',
-    borderRadius: 10,
-    paddingTop: 15,
-    width: 50,
-    height: 50,
-  },
+
   text: {
     fontWeight: 'bold',
     color: 'white',
