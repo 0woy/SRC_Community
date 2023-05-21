@@ -6,7 +6,8 @@ import DrawerBar from '../SubScreen/DrawerBar';
 
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigation = () => {
+const DrawerNavigation = ({setUser}) => {
+  console.log(setUser);
   return (
     <Drawer.Navigator
       initialRouteName="메인화면"
@@ -22,7 +23,7 @@ const DrawerNavigation = () => {
           marginTop: '5%',
         },
       }}
-      drawerContent={props => <DrawerBar {...props} />}>
+      drawerContent={props => <DrawerBar {...props} setUser={setUser} />}>
       <Drawer.Screen
         name="메인화면"
         component={MainStack}

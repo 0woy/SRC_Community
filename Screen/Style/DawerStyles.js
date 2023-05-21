@@ -8,6 +8,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flex: 1,
   },
+  touched: {
+    backgroundColor: '#fb8c00',
+    borderRadius: 10,
+  },
   buttons: {
     flexDirection: 'row',
     alignItems: 'center',

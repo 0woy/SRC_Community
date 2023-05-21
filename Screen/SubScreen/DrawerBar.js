@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -7,8 +7,11 @@ import {
   Alert,
   Image,
 } from 'react-native';
+import {useUserContext} from '../Navigations/UserContext';
 import styles from '../Style/DawerStyles';
-const DrawerBar = ({navigation}) => {
+import SignInScreen from '../SignInScreen';
+const DrawerBar = ({navigation, setUser}) => {
+  const {isClicked, setIsClicked} = useState(false);
   const list = [
     {idx: 0, title: '작성한 게시글'},
     {idx: 1, title: '댓글 단 게시글'},
@@ -16,14 +19,36 @@ const DrawerBar = ({navigation}) => {
     {idx: 3, title: '로그아웃'},
     {idx: 4, title: '회원 탈퇴'},
   ];
+  const handlePress = () => {
+    setIsClicked(!isClicked);
+  };
+  const handleLogout = () => {
+    Alert.alert(
+      '로그아웃',
+      '로그아웃 하시겠습니까?',
+      [
+        {
+          text: '예',
+          onPress: () => {
+            setUser(null);
+          },
+        },
+        {
+          text: '아니오',
+          style: 'cancel',
+        },
+      ],
+      {cancelable: true},
+    );
+  };
 
   return (
     <View style={styles.container}>
       <View>
         {/* 작성한 게시글, 댓글 단 게시글 */}
         <TouchableOpacity
-          style={styles.buttons}
-          onPress={() => Alert.alert('glgl')}>
+          style={[styles.buttons, isClicked && styles.touched]}
+          onPress={handlePress}>
           <Text style={styles.text}>작성한 게시글</Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -47,9 +72,7 @@ const DrawerBar = ({navigation}) => {
       </View>
       <View style={{flexDirection: 'row'}}>
         {/* 로그아웃, 회원 탈퇴 */}
-        <TouchableOpacity
-          style={styles.buttons}
-          onPress={() => Alert.alert('glgl')}>
+        <TouchableOpacity style={styles.buttons} onPress={handleLogout}>
           <Text style={styles.text}>로그아웃</Text>
         </TouchableOpacity>
         <TouchableOpacity

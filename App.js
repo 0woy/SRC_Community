@@ -21,7 +21,7 @@ function App() {
     <UserContextProvider>
       <NavigationContainer>
         {user ? (
-          <DrawerNavigation />
+          <DrawerNavigation setUser={handleSignIn} />
         ) : (
           <StackNavigation setUser={handleSignIn} />
         )}
