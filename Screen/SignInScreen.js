@@ -12,15 +12,14 @@ import styles from './Style/RegisterStyles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useUserContext} from './Navigations/UserContext';
 import {getUser} from '../lib/user';
-import SetupProfile from './SetupProfile';
 
-function SignInScreen({navigation}) {
+function SignInScreen({navigation, route}) {
   const bodyRef = useRef();
   const [form, setForm] = useState({
     email: '',
     password: '',
   });
-  const {setUser} = useUserContext();
+  const {setUser} = route.params;
 
   const resultMessages = {
     'auth/wrong-password': '잘못된 비밀번호입니다.',
@@ -43,7 +42,7 @@ function SignInScreen({navigation}) {
     try {
       const {user} = await auth().signInWithEmailAndPassword(email, password);
       const profile = await getUser(user.email);
-      console.log(profile);
+
       if (!profile) {
         navigation.navigate('회원등록', {uid: user.uid});
       } else {

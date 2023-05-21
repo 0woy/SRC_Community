@@ -4,6 +4,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import styles from './Style/MainStyle';
 import {firebase} from '@react-native-firebase/auth';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import DrawerNavigation from './Navigations/DrawerNavigation';
 
 function MainScreen({navigation}) {
   const [srcName, setSrcName] = useState('');
@@ -27,7 +28,7 @@ function MainScreen({navigation}) {
     <View style={{flex: 1}}>
       <View style={styles.subContainer}>
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <Icon
               name="dehaze"
               size={30}
@@ -91,7 +92,7 @@ function MainScreen({navigation}) {
         </View>
       </View>
       <View style={styles.subContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('메인화면')}>
+        <TouchableOpacity onPress={() => navigation.navigate('마이페이지')}>
           <Icon name="contact-page" size={35} color="white"></Icon>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('글쓰기')}>

@@ -16,7 +16,7 @@ const AllBoard = ({navigation, route}) => {
 
   useEffect(() => {
     let query = db.collection(`posts_${board}`).orderBy('createdAt', 'desc');
-    if (board === '자유게시판') {
+    if (board != '전체게시판') {
       query = query.where('src_name', '==', srcName);
     }
 
@@ -63,7 +63,7 @@ const AllBoard = ({navigation, route}) => {
         <Text style={styles.text}>{route.params.board}</Text>
         <TouchableOpacity
           style={styles.text}
-          onPress={() => navigation.navigate('메인화면')}>
+          onPress={() => navigation.navigate('메인')}>
           <Icon name="close" size={30} color="white"></Icon>
         </TouchableOpacity>
       </View>

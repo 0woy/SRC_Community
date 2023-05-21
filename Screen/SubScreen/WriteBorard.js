@@ -140,7 +140,7 @@ const WriteBoard = ({navigation}) => {
           data={data}
           save="value"
           boxStyles={{
-            backgroundColor: '#C6C6C6',
+            backgroundColor: '#D1D1D1',
             marginRight: 80,
           }}
           defaultOption={('1', '자유게시판')}
