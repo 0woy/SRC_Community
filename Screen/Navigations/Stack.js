@@ -1,19 +1,14 @@
-import * as React from 'react';
+import {React, useEffect} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import SignInScreen from '../SignInScreen';
 import SignUpScreen from '../SignUpScreen';
 import FindUserScreen from '../FindUserScreen';
-
 import {useUserContext} from './UserContext';
 import WelcomeScreen from '../WelcomeScreen';
-import MyPage from '../SubScreen/MyPage';
-import Search from '../SubScreen/Search';
 
 const Stack = createStackNavigator();
 
 const StackNavigation = ({setUser}) => {
-  const {user} = useUserContext();
-  console.log('setUser', setUser);
   return (
     <Stack.Navigator>
       <Stack.Screen

@@ -40,6 +40,16 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
   },
+  writeButton: {
+    backgroundColor: 'rgba(242, 65, 65,0.75)',
+    padding: 8,
+    borderRadius: 5,
+  },
+  writeContainer: {
+    alignItems: 'center',
+    paddingBottom: 15,
+    backgroundColor: 'rgba(0, 0, 0, 0)',
+  },
 });
 
 export default styles;

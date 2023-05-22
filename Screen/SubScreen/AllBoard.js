@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, SafeAreaView, FlatList} from 'react-native';
+import {View, Text, SafeAreaView, FlatList, BackHandler} from 'react-native';
 import styles from '../Style/BoardStyles';
 import firebase from '@react-native-firebase/app';
 import '@react-native-firebase/firestore';
@@ -22,7 +22,7 @@ const AllBoard = ({navigation, route}) => {
 
     unsubscribe = query.onSnapshot(querySnapshot => {
       const posts = [];
-      // 자유게시판인 경우 에러가 발생하여 해당 if문 추가하여 solve
+      // 소속 기숙사만 열람가능한 게시판인 경우, 에러가 발생하여 해당 if문 추가하여 solve
       if (querySnapshot) {
         querySnapshot.forEach(doc => {
           posts.push({...doc.data(), id: doc.id});
@@ -33,6 +33,28 @@ const AllBoard = ({navigation, route}) => {
     return () => unsubscribe();
   }, []);
 
+  useEffect(() => {
+    {
+      /* 
+    글쓰기 페이지에서 글 작성 후 해당 게시판으로 이동한 경우,
+    뒤로가기 누를 시 다시 글쓰기 페이지로 돌아가는 것을 막기 위한 코드
+    게시판에서 사용자가 뒤로가기를 누르면 메인으로 이동하도록 설정
+    */
+    }
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      () => {
+        navigation.navigate('메인');
+        return true; // 기본 뒤로가기 동작(스택에서 이전 페이지로 이동)을 막기 위해 true 반환
+      },
+    );
+
+    return () => {
+      backHandler.remove(); // 이벤트 리스너 제거
+    };
+  }, []);
+
+  // 게시글 미리보기 표시
   const renderItem = ({item}) => {
     const postDate = moment(item.createdAt.toDate());
     const today = moment();
@@ -43,16 +65,20 @@ const AllBoard = ({navigation, route}) => {
       dateStr = postDate.format('MM월 DD일');
     }
     return (
-      <View style={styles.postContainer}>
-        <View style={styles.postHeader}>
-          <Text style={styles.postTitle}>{item.title}</Text>
-          <Text style={styles.postTime}>{dateStr}</Text>
-        </View>
-        <View>
-          <Text style={styles.postContent} numberOfLines={2}>
-            {item.content}
-          </Text>
-        </View>
+      <View>
+        <TouchableOpacity
+          style={styles.postContainer}
+          onPress={() => navigation.navigate('게시글', {item, dateStr})}>
+          <View style={styles.postHeader}>
+            <Text style={styles.postTitle}>{item.title}</Text>
+            <Text style={styles.postTime}>{dateStr}</Text>
+          </View>
+          <View>
+            <Text style={styles.postContent} numberOfLines={2}>
+              {item.content}
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -74,19 +100,10 @@ const AllBoard = ({navigation, route}) => {
           keyExtractor={item => item.id}
         />
       </SafeAreaView>
-      <View
-        style={{
-          alignItems: 'center',
-          paddingBottom: 15,
-          backgroundColor: 'rgba(0, 0, 0, 0)',
-        }}>
+      <View style={styles.writeContainer}>
         <TouchableOpacity
-          style={{
-            backgroundColor: 'rgba(242, 65, 65,0.75)',
-            padding: 8,
-            borderRadius: 5,
-          }}
-          onPress={() => navigation.navigate('글쓰기')}>
+          style={styles.writeButton}
+          onPress={() => navigation.navigate('글쓰기', {board, srcName})}>
           <Text style={{color: 'white'}}>글쓰기</Text>
         </TouchableOpacity>
       </View>

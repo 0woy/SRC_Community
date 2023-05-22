@@ -95,7 +95,8 @@ function MainScreen({navigation}) {
         <TouchableOpacity onPress={() => navigation.navigate('마이페이지')}>
           <Icon name="contact-page" size={35} color="white"></Icon>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('글쓰기')}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('글쓰기', {srcName})}>
           <Icon name="brush" size={35} color="white"></Icon>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('알림')}>

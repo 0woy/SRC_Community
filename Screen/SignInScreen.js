@@ -33,7 +33,6 @@ function SignInScreen({navigation, route}) {
   };
 
   const onSubmit = async () => {
-    console.log(setUser);
     if (!form.email || !form.password) {
       Alert.alert('입력오류', '모든 필드를 입력해 주세요.');
       return;

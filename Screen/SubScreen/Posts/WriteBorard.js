@@ -10,16 +10,16 @@ import {
 } from 'react-native';
 import {SelectList} from 'react-native-dropdown-select-list';
 import firebase from '@react-native-firebase/app';
-import styles from '../Style/WriteStyles';
+import styles from '../../Style/WriteStyles';
 import '@react-native-firebase/auth';
 import '@react-native-firebase/firestore';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {launchImageLibrary} from 'react-native-image-picker'; // 이미지
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const WriteBoard = ({navigation}) => {
+const WriteBoard = ({navigation, route}) => {
   // 게시판 선택을 위한 코드
-  const [selected, setSelected] = React.useState('');
+  const [selected, setSelected] = useState('');
   const data = [
     {key: '1', value: '자유게시판'},
     {key: '2', value: '전체게시판'},
@@ -27,50 +27,18 @@ const WriteBoard = ({navigation}) => {
     {key: '4', value: '택시 타자'},
   ];
 
-  const [srcName, setSrcName] = useState('');
+  const [srcName, setSrcName] = useState(route.params.srcName);
   const [posts, setPosts] = useState([]);
   const [response, setResponse] = useState(null); // 이미지 관리 state
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [board, setBoard] = useState('자유게시판'); // default: 자유게시판
+  const [board, setBoard] = useState(route.params); // default: 자유게시판
   const db = firebase.firestore();
   const currentUser = firebase.auth().currentUser;
 
   useEffect(() => {
-    db.collection('users')
-      .doc(currentUser.email)
-      .get()
-      .then(doc => {
-        const srcName = doc.data().src_name;
-        setSrcName(srcName);
-      })
-      .catch(error => {
-        console.log('Error getting document:', error);
-      });
-  }, []);
-
-  useEffect(() => {
-    const unsubscribe = db
-      .collection('posts')
-      .where('board', '==', selected) // filter posts by board
-      .orderBy('createdAt', 'desc')
-      .onSnapshot(querySnapshot => {
-        if (querySnapshot) {
-          const posts = [];
-          querySnapshot.forEach(doc => {
-            posts.push({...doc.data(), id: doc.id});
-          });
-          setPosts(posts);
-          setSelected('');
-          setBoard('');
-        } else {
-          console.log('No documenets fond matching the query');
-        }
-      });
     setSelected('');
-    return () => unsubscribe();
-  }, [board]); // board의 상태가 바뀔 때마다 실행
-
+  }, []);
   const onSelectImage = () => {
     launchImageLibrary(
       {
@@ -109,16 +77,17 @@ const WriteBoard = ({navigation}) => {
         board: selected, // add board to the post data
         src_name: srcName,
       });
+      setTitle('');
+      setContent('');
+      setBoard('');
       navigation.navigate(selected, {
         board: selected,
         src: srcName,
       });
+      setSelected('');
     } catch (error) {
       console.log(error);
     }
-    setTitle('');
-    setContent('');
-    setSelected('');
   };
 
   return (
@@ -143,7 +112,6 @@ const WriteBoard = ({navigation}) => {
             backgroundColor: '#D1D1D1',
             marginRight: 80,
           }}
-          defaultOption={('1', '자유게시판')}
           searchPlaceholder="검색"
           dropdownStyles={{backgroundColor: '#C6C6C6', marginRight: 80}}
         />
